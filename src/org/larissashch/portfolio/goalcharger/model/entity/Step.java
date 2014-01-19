@@ -16,6 +16,7 @@ public class Step extends BaseEntity{
 	private Date targetDate;
 	private StatusType status;
 	private List<String> keyWords;
+	
 	public String getName() {
 		return name;
 	}
