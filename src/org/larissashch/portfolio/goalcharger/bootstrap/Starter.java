@@ -1,4 +1,4 @@
-package org.larissashch.goalcharger.bootstrap;
+package org.larissashch.portfolio.goalcharger.bootstrap;
 
 public class Starter {
 
