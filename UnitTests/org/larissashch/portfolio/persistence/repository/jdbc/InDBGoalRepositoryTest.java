@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
-import org.junit.Before;
+import org.junit.Before; 
 import org.junit.Test;
 import org.larissashch.portfolio.persistence.repository.GoalRepository;
 import org.larissashch.portfolio.goalcharger.model.entity.CategoryType;
