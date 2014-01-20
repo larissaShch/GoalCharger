@@ -117,7 +117,7 @@ public class User implements java.io.Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	public void setId(int id) {

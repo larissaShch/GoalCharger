@@ -5,10 +5,16 @@ public class KeyWord extends BaseEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = -5522797693670673316L;
+
 	private String value;
+	
+	
+	
 	public String getValue() {
 		return value;
 	}
+	
+	
 	public void setValue(String value) {
 		this.value = value;
 	}
@@ -38,6 +44,9 @@ public class KeyWord extends BaseEntity{
 			return false;
 		return true;
 	}
+	
+	
+	
 	
 	
 }

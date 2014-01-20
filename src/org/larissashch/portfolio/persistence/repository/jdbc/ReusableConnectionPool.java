@@ -95,7 +95,7 @@ public class ReusableConnectionPool implements ConnectionPool {
 				e.printStackTrace();
 			}
 			
-			this.getInfo();
+			//this.getInfo();
 			return getConnection();
 		}
 	}
