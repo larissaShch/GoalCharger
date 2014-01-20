@@ -19,7 +19,7 @@ import org.larissashch.portfolio.goalcharger.model.entity.Step;
 
 public class InDBGoalRepositoryTest {
 	
-	//test
+	//test--
 	private GoalRepository repository;
 
 	public static class TestTask implements Runnable {
