@@ -15,7 +15,7 @@ public enum CategoryType implements java.io.Serializable {
 		this.value = value;
 	}
 
-	public static CategoryType getAccountType(String value) {
+	public static CategoryType getCategoryType(String value) {
 
 		if (value.equals("CAREER")) {
 			return CategoryType.CAREER;

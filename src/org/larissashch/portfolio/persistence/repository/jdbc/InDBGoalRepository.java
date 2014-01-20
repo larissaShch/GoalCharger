@@ -11,26 +11,31 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.taglibs.standard.extra.spath.Step;
-import org.larissashch.portfolio.goalcharger.model.entity.BaseEntity;
-import org.larissashch.portfolio.goalcharger.model.entity.Goal;
-import org.larissashch.portfolio.persistence.repository.GoalRepository;
 
-public class InDBGoalRepository implements GoalRepository{
-	
+
+import org.larissashch.portfolio.goalcharger.model.entity.Administrator;
+import org.larissashch.portfolio.goalcharger.model.entity.BaseEntity;
+import org.larissashch.portfolio.goalcharger.model.entity.CategoryType;
+import org.larissashch.portfolio.goalcharger.model.entity.Customer;
+import org.larissashch.portfolio.goalcharger.model.entity.Goal;
+import org.larissashch.portfolio.goalcharger.model.entity.KeyWord;
+import org.larissashch.portfolio.goalcharger.model.entity.StatusType;
+import org.larissashch.portfolio.persistence.repository.GoalRepository;
+import org.larissashch.portfolio.goalcharger.model.entity.Step;
+
+public class InDBGoalRepository implements GoalRepository {
+
 	protected String dbName;
 	protected String tableNameGoal;
 	protected String tableNameStep;
 
 	protected String connectionUrl;
 	private ReusableConnectionPool connectionPool;
-	
-	
+
 	public InDBGoalRepository(boolean testFlag) {
 		this.dbName = "DerbyDBGoalCharger";
 		this.tableNameGoal = "Goal";
 		this.tableNameStep = "Step";
-
 
 		if (testFlag) {
 			dbName = "Test" + dbName;
@@ -67,10 +72,10 @@ public class InDBGoalRepository implements GoalRepository{
 								+ "name VARCHAR(255),"
 								+ "description VARCHAR(750),"
 								+ "category VARCHAR(100),"
-								+ "status VARCHAR(100),"
+								+ "status VARCHAR(100)," 
 								+ "startDate DATE,"
-								+ "targetDate DATE,"
-								+ "percentOfCharge FLOAT" 
+								+ "targetDate DATE," 
+								+ "percentOfCharge FLOAT"
 								+ ")");
 				System.out.println("Table 'Goal' was created;");
 
@@ -82,31 +87,36 @@ public class InDBGoalRepository implements GoalRepository{
 								+ "createdByUserType VARCHAR(100),"
 								+ "name VARCHAR(255),"
 								+ "description VARCHAR(750),"
-								+ "status VARCHAR(100),"
+								+ "status VARCHAR(100)," 
 								+ "startDate DATE,"
 								+ "targetDate DATE,"
-
 								+ ")");
 
 				System.out.println("Table 'Step' was created;");
 
-
-				statement
-						.executeUpdate("CREATE TABLE KeyWords("
-								+ "holderId integer,"
-								+ "holderType VARCHAR(255)," 
-								+ "keyWord VARCHAR(255)" 
-								+ ")");
-				System.out.println("Table 'KeyWords' was created;");
-				
-				statement
-				.executeUpdate("CREATE TABLE GoalSteps("
-						+ "goalId integer,"
-						+ "stepId integer"
+				statement.executeUpdate("CREATE TABLE KeyWords("
+						+ "id integer," 
+						+ "keyWord VARCHAR(255)" 
 						+ ")");
-		System.out.println("Table 'GoalSteps' was created;");
+				System.out.println("Table 'KeyWords' was created;");
 
-				
+				statement.executeUpdate("CREATE TABLE KeyWordsGoal("
+						+ "keywordId integer," 
+						+ "goalId integer"
+						+ ")");
+				System.out.println("Table 'KeyWordsGoal' was created;");
+
+				statement.executeUpdate("CREATE TABLE KeyWordsStep("
+						+ "keywordId integer," 
+						+ "stepId integer"
+
+						+ ")");
+				System.out.println("Table 'KeyWordsStep' was created;");
+
+				statement.executeUpdate("CREATE TABLE GoalSteps("
+						+ "goalId integer," + "stepId integer" + ")");
+				System.out.println("Table 'GoalSteps' was created;");
+
 				connectionPool.releaseConnection(connection);
 			}
 
@@ -115,7 +125,7 @@ public class InDBGoalRepository implements GoalRepository{
 			throw new RuntimeException();
 		}
 	}
-	
+
 	private Date stringToDate(String dateString) {
 		String messageException = "Error Message: \nMethod: stringToDate(String dateString); \ndateString: "
 				+ dateString;
@@ -180,8 +190,7 @@ public class InDBGoalRepository implements GoalRepository{
 		}
 
 	}
-	
-	
+
 	private int save(String tableName, List<String> fieldsNames,
 			List<String> fieldsTypes, List<Object> filedsValues) {
 		int lastId = 0;
@@ -283,10 +292,9 @@ public class InDBGoalRepository implements GoalRepository{
 			connectionPool.releaseConnection(connection);
 		}
 	}
-	
-	private void updateKeyWords(List<String> keyWords, int id, String type){
-		//!!!!!!!!
-	}
+
+
+
 	private <T extends BaseEntity> void updateList(List<T> listOfValues,
 			int objectId, String tableName, String objectIdFieldName,
 			String valueFieldName) {
@@ -329,12 +337,14 @@ public class InDBGoalRepository implements GoalRepository{
 		}
 	}
 
-	private List<Integer> getListOfId(String tableName, String fieldName, String objectFieldName, Long objectId){
+	private List<Integer> getListOfId(String tableName, String fieldName,
+			String objectFieldName, Integer objectId) {
 		List<Integer> list = new ArrayList<>();
 
 		ReusableConnection connection = connectionPool.getConnection();
 		try (Statement statement = connection.createStatement()) {
-			String str = "select "+fieldName+" from " + tableName+" where "+objectFieldName+"="+objectId;
+			String str = "select " + fieldName + " from " + tableName
+					+ " where " + objectFieldName + "=" + objectId;
 
 			try (ResultSet rs = statement.executeQuery(str)) {
 
@@ -351,7 +361,7 @@ public class InDBGoalRepository implements GoalRepository{
 		} finally {
 			connectionPool.releaseConnection(connection);
 		}
-	
+
 	}
 
 	@Override
@@ -367,10 +377,6 @@ public class InDBGoalRepository implements GoalRepository{
 			createdByUserId = goal.getCreatedBy().getId();
 			createdByUserType = goal.getCreatedBy().getUserType();
 		}
-		
-		
-
-		
 
 		List<String> fieldsNames = new ArrayList<>();
 		fieldsNames.add("createdDate");
@@ -378,20 +384,20 @@ public class InDBGoalRepository implements GoalRepository{
 		fieldsNames.add("createdByUserType");
 		fieldsNames.add("name");
 		fieldsNames.add("description");
-		
+
 		fieldsNames.add("category");
 		fieldsNames.add("status");
 		fieldsNames.add("startDate");
 		fieldsNames.add("targetDate");
 		fieldsNames.add("percentOfCharge");
-		
+
 		List<String> fieldsTypes = new ArrayList<>();
 		fieldsTypes.add("Date");
 		fieldsTypes.add("Int");
 		fieldsTypes.add("String");
 		fieldsTypes.add("String");
 		fieldsTypes.add("String");
-		
+
 		fieldsTypes.add("String");
 		fieldsTypes.add("String");
 		fieldsTypes.add("Date");
@@ -399,21 +405,21 @@ public class InDBGoalRepository implements GoalRepository{
 		fieldsTypes.add("Float");
 
 		List<Object> filedsValues = new ArrayList<>();
-		filedsValues.add(new java.sql.Date(this.nullToDate(
-				goal.getCreateDate()).getTime()));
+		filedsValues.add(new java.sql.Date(this
+				.nullToDate(goal.getCreateDate()).getTime()));
 		filedsValues.add(createdByUserId);
 		filedsValues.add(createdByUserType);
 		filedsValues.add(goal.getGoalName());
 		filedsValues.add(goal.getDescription());
-		
+
 		filedsValues.add(this.objectToString(goal.getCategory()));
 		filedsValues.add(this.objectToString(goal.getStatus()));
 
-		filedsValues.add(new java.sql.Date(this.nullToDate(
-				goal.getStartDate()).getTime()));
-		filedsValues.add(new java.sql.Date(this.nullToDate(
-				goal.getTargetDate()).getTime()));
-		
+		filedsValues.add(new java.sql.Date(this.nullToDate(goal.getStartDate())
+				.getTime()));
+		filedsValues.add(new java.sql.Date(this
+				.nullToDate(goal.getTargetDate()).getTime()));
+
 		filedsValues.add(goal.getPercentOfCharge());
 
 		if (goal.getId() > 0) {
@@ -422,47 +428,155 @@ public class InDBGoalRepository implements GoalRepository{
 					filedsValues);
 		} else {
 
-			goal.setId(this.save("Goal", fieldsNames, fieldsTypes,
-					filedsValues));
+			goal.setId(this
+					.save("Goal", fieldsNames, fieldsTypes, filedsValues));
 		}
+
 		
-		
-		this.updateKeyWords(goal.getKeyWords(), goal.getId(), "goal");
-		
-		this.updateList(goal.getSteps(), goal.getId(),
-				"GoalSteps", "goalId", "stepId");
-		
+		this.updateList(goal.getKeyWords(), goal.getId(), "KeyWordsGoal", "keyWordlId",
+				"goalId");
+
+		this.updateList(goal.getSteps(), goal.getId(), "GoalSteps", "goalId",
+				"stepId");
+
 		System.out.println("\nFinished method saveGoal(goal). id:"
 				+ goal.getId() + " \n\n\n");
-		
+
 	}
 
 	@Override
 	public Goal readGoal(int id) {
-		// TODO Auto-generated method stub
+		System.out.println("Started method readGoal(id).\n");
+		if (id > 0) {
+
+			ReusableConnection connection = connectionPool.getConnection();
+			try (Statement statement = connection.createStatement()) {
+				String str = "select * from Goal where id=" + id + "";
+				try (ResultSet rs = statement.executeQuery(str)) {
+
+					while (rs.next()) {
+						Goal goal = new Goal();
+						goal.setId(rs.getInt(rs.findColumn("id")));
+						goal.setCreateDate(this.dateToNull(rs.getDate(rs
+								.findColumn("createdDate"))));
+						
+						goal.setGoalName(rs.getString(rs.findColumn("name")));
+						goal.setGoalName(rs.getString(rs.findColumn("description")));
+
+						
+						
+
+						goal.setCategory(CategoryType.getCategoryType(rs.getString(rs.findColumn("category"))));
+						goal.setStatus(StatusType.getStatusType(rs.getString(rs.findColumn("status"))));
+						
+						goal.setStartDate(this.dateToNull(rs.getDate(rs.findColumn("startDate"))));
+						goal.setTargetDate(this.dateToNull(rs.getDate(rs.findColumn("targetDate"))));
+						
+						goal.setPercentOfCharge(rs.getFloat(rs.findColumn("percentOfCharge")));
+						
+						
+						List<Integer> keyWordsIdList = this.getListOfId("KeyWordsGoal", "keyWordId", "goalId", goal.getId());
+						List<KeyWord> keyWords = new ArrayList<>();
+						for(Integer keyWordId:keyWordsIdList){
+							keyWords.add(this.readKeyWord(keyWordId));
+						}
+						
+						goal.setKeyWords(keyWords);
+						
+						List<Integer> stepsIdList = this.getListOfId("StepsGoal", "stepId", "goalId", goal.getId());
+						List<Step> steps = new ArrayList<>();
+						for(Integer stepId:stepsIdList){
+							steps.add(this.readStep(stepId));
+						}
+						goal.setSteps(steps);
+						
+						
+
+						int createdById = rs.getInt(rs.findColumn("id"));
+						String createdByUserType = rs.getString(rs
+								.findColumn("createdByUserType"));
+
+						if (createdById == 0) {
+							Administrator administrator = new Administrator();
+							administrator.setId(0);
+							goal.setCreatedBy(administrator);
+						} else {
+							if (createdByUserType.equals("Customer")) {
+								Customer createdByCustomer = new Customer();
+								createdByCustomer.setId(createdById);
+								goal.setCreatedBy(createdByCustomer);
+							}
+							if (createdByUserType.equals("Administrator")) {
+								Administrator administrator = new Administrator();
+								administrator.setId(createdById);
+								goal.setCreatedBy(administrator);
+							}
+							System.out
+									.println("\nFinished method readMoneyAccount(id). id:"
+											+ id + " \n\n\n");
+							return goal;
+						}
+
+					}
+
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(
+						"Error in method readMoneyAccount(long id), id:" + id);
+			} finally {
+				connectionPool.releaseConnection(connection);
+			}
+		}
+		System.out.println("\nFinished method readMoneyAccount(id). id:" + id
+				+ " \n\n\n");
 		return null;
 	}
 
 	@Override
 	public void deleteGoal(int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void saveStep(Step step) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public Goal readStep(int id) {
+	public Step readStep(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void deleteStep(int id) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void saveKeyWord(KeyWord keyWord) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public KeyWord readKeyWord(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int readKeyWord(String keyWord) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void deleteKeyWord(int id) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -13,7 +13,7 @@ public enum StatusType implements java.io.Serializable {
 		this.value = value;
 	}
 
-	public static StatusType getAccountType(String value) {
+	public static StatusType getStatusType(String value) {
 
 		if (value.equals("NEW")) {
 			return StatusType.NEW;

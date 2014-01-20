@@ -15,7 +15,7 @@ public class Step extends BaseEntity{
 	private Date startDate;
 	private Date targetDate;
 	private StatusType status;
-	private List<String> keyWords;
+	private List<KeyWord> keyWords;
 	
 	public String getName() {
 		return name;
@@ -47,10 +47,10 @@ public class Step extends BaseEntity{
 	public void setStatus(StatusType status) {
 		this.status = status;
 	}
-	public List<String> getKeyWords() {
+	public List<KeyWord> getKeyWords() {
 		return keyWords;
 	}
-	public void setKeyWords(List<String> keyWords) {
+	public void setKeyWords(List<KeyWord> keyWords) {
 		this.keyWords = keyWords;
 	}
 	public static long getSerialversionuid() {

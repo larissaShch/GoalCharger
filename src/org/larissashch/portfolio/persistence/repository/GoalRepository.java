@@ -1,7 +1,9 @@
 package org.larissashch.portfolio.persistence.repository;
 
-import org.apache.taglibs.standard.extra.spath.Step;
+
 import org.larissashch.portfolio.goalcharger.model.entity.Goal;
+import org.larissashch.portfolio.goalcharger.model.entity.Step;
+import org.larissashch.portfolio.goalcharger.model.entity.KeyWord;
 
 public interface GoalRepository {
 	void saveGoal(Goal goal);
@@ -9,6 +11,11 @@ public interface GoalRepository {
 	void deleteGoal(int id);
 	
 	void saveStep(Step step);
-	Goal readStep(int id);
+	Step readStep(int id);
 	void deleteStep(int id);
+	
+	void saveKeyWord(KeyWord keyWord);
+	KeyWord readKeyWord(int id);
+	int readKeyWord(String keyWord);
+	void deleteKeyWord(int id);
 }

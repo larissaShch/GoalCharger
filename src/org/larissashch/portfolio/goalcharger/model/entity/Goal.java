@@ -14,7 +14,7 @@ public class Goal extends BaseEntity{
 	private StatusType status;
 	private Date startDate;
 	private Date targetDate;
-	private List <String> keyWords;
+	private List <KeyWord> keyWords;
 	private List <Step> steps;
 	private Float percentOfCharge;
 	
@@ -60,10 +60,10 @@ public class Goal extends BaseEntity{
 	public void setPercentOfCharge(Float percentOfCharge) {
 		this.percentOfCharge = percentOfCharge;
 	}
-	public List<String> getKeyWords() {
+	public List<KeyWord> getKeyWords() {
 		return keyWords;
 	}
-	public void setKeyWords(List<String> keyWords) {
+	public void setKeyWords(List<KeyWord> keyWords) {
 		this.keyWords = keyWords;
 	}
 	public List<Step> getSteps() {
