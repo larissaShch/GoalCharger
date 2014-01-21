@@ -6,6 +6,7 @@ import java.util.List;
 public class Goal extends BaseEntity{
 	/**
 	 * 
+	 * 
 	 */
 	private static final long serialVersionUID = 9127912174882616256L;
 	private String goalName;

@@ -19,7 +19,7 @@ import org.larissashch.portfolio.goalcharger.model.entity.Step;
 
 public class InDBGoalRepositoryTest {
 	
-	//test----
+	
 	private GoalRepository repository;
 
 	public static class TestTask implements Runnable {
@@ -129,13 +129,13 @@ public class InDBGoalRepositoryTest {
 				executor.submit(new TestTask("saveKeyWord", repository, i+100));
 
 			}
-			while (50 == repository.getGoalCount()) {
+			while (50 >= repository.getGoalCount()) {
 				Thread.sleep(1000);
 			}
-			while (50 == repository.getStepCount()) {
+			while (50 >= repository.getStepCount()) {
 				Thread.sleep(100);
 			}
-			while (50 == repository.getKeyWordCount()) {
+			while (50 >= repository.getKeyWordCount()) {
 				Thread.sleep(10);
 			}
 
