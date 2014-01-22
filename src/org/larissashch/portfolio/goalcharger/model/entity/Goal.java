@@ -17,7 +17,7 @@ public class Goal extends BaseEntity{
 	private Date targetDate;
 	private List <KeyWord> keyWords;
 	private List <Step> steps;
-	private Float percentOfCharge;
+	private float percentOfCharge;
 	
 	public String getGoalName() {
 		return goalName;

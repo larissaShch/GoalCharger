@@ -14,7 +14,9 @@ public enum StatusType implements java.io.Serializable {
 	}
 
 	public static StatusType getStatusType(String value) {
-
+		if (value ==null || value.equals("")){
+			return null;
+		}
 		if (value.equals("NEW")) {
 			return StatusType.NEW;
 		}

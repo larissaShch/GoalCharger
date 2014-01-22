@@ -106,7 +106,8 @@ public class InDBGoalRepository implements GoalRepository {
 				statement.executeUpdate("CREATE TABLE GoalSteps("
 						+ "goalId integer," + "stepId integer" + ")");
 				System.out.println("Table 'GoalSteps' was created;");
-
+				
+				System.out.println("DB created. Release connection.");
 				connectionPool.releaseConnection(connection);
 			}
 
@@ -228,6 +229,7 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
+			System.out.println("Save method for table:"+tableName+". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 		return lastId;
@@ -263,6 +265,7 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
+			System.out.println("Updated method for table:"+tableName+". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 	}
@@ -279,6 +282,7 @@ public class InDBGoalRepository implements GoalRepository {
 					"Error in method delete(String tableName, long id), id:"
 							+ id + ", tableName:" + tableName);
 		} finally {
+			System.out.println("Delete method for table:"+tableName+". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 	}
@@ -319,6 +323,7 @@ public class InDBGoalRepository implements GoalRepository {
 					e.printStackTrace();
 					throw new RuntimeException("");
 				} finally {
+					System.out.println("UpdatedList method for table:"+tableName+". Release connection.");
 					connectionPool.releaseConnection(connection);
 				}
 			}
@@ -347,6 +352,7 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
+			System.out.println("getListOfId method for table:"+tableName+". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 
@@ -355,11 +361,12 @@ public class InDBGoalRepository implements GoalRepository {
 	private int getCount(String tableName) {
 		ReusableConnection connection = connectionPool.getConnection();
 		try (Statement statement = connection.createStatement()) {
-			String str = "select count(*) from " + tableName;
+			String str = "select count(id) from " + tableName;
 
 			try (ResultSet rs = statement.executeQuery(str)) {
 
 				while (rs.next()) {
+					System.out.println("test"+rs.getInt(1));
 					return rs.getInt(1);
 
 				}
@@ -369,6 +376,7 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
+			System.out.println("GetCount method for table:"+tableName+". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 
@@ -498,7 +506,7 @@ public class InDBGoalRepository implements GoalRepository {
 						goal.setKeyWords(keyWords);
 
 						List<Integer> stepsIdList = this.getListOfId(
-								"StepsGoal", "stepId", "goalId", goal.getId());
+								"GoalSteps", "stepId", "goalId", goal.getId());
 						List<Step> steps = new ArrayList<>();
 						for (Integer stepId : stepsIdList) {
 							steps.add(this.readStep(stepId));
@@ -538,6 +546,7 @@ public class InDBGoalRepository implements GoalRepository {
 				throw new RuntimeException(
 						"Error in method readGoal(int id), id:" + id);
 			} finally {
+				System.out.println("ReadGoal method. Release connection.");
 				connectionPool.releaseConnection(connection);
 			}
 		}
@@ -692,6 +701,7 @@ public class InDBGoalRepository implements GoalRepository {
 				throw new RuntimeException(
 						"Error in method readStep(int id), id:" + id);
 			} finally {
+				System.out.println("ReadStep method. Release connection.");
 				connectionPool.releaseConnection(connection);
 			}
 		}
@@ -759,6 +769,7 @@ public class InDBGoalRepository implements GoalRepository {
 				throw new RuntimeException(
 						"Error in method readKeyWord(int id), id:" + id);
 			} finally {
+				System.out.println("ReadKeyWord method. Release connection.");
 				connectionPool.releaseConnection(connection);
 			}
 		}
@@ -797,6 +808,7 @@ public class InDBGoalRepository implements GoalRepository {
 						"Error in method readKeyWord(String keyWord), keyWord:"
 								+ keyWord);
 			} finally {
+				System.out.println("ReadKeyWord method. Release connection.");
 				connectionPool.releaseConnection(connection);
 			}
 		}

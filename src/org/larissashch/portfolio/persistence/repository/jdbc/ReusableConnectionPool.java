@@ -51,18 +51,23 @@ public class ReusableConnectionPool implements ConnectionPool {
 	}
 	@Override
 	public ReusableConnection getConnection() {
+		boolean allConnectionsBusy;
 		if (closed.get()) {
 			throw new RuntimeException("Connection pool is closed.");
 		}
 		if (connections == null) {
 			connections = new ArrayList<>();
 		}
-
+		int index = 0;
 		for (ReusableConnection connection : connections) {
+			index++;
 			synchronized (connection) {
 				if (connection != null && !connection.isBusy()) {
 					connection.setBusy(true);
+					allConnectionsBusy = false;
 					
+					
+					System.out.println("Free connection "+index+" from pool!");
 					
 					return connection;
 				}
@@ -82,23 +87,27 @@ public class ReusableConnectionPool implements ConnectionPool {
 				ReusableConnection reusableConnection = new ReusableConnection(
 						connection);
 				connections.add(reusableConnection);
-
+				
+				index++;
+				System.out.println("New connection "+index+" added to pool!");
 				
 				return reusableConnection;
 			}
 		}
-		
-		while (true) {
+		allConnectionsBusy = true;
+		while (allConnectionsBusy) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		 
-			
-			this.getInfo();
+
+			//this.getInfo();
+			System.out.println("All connections are busy!");
 			return getConnection();
 		}
+		return null;
 	}
 
 	@Override
@@ -110,7 +119,8 @@ public class ReusableConnectionPool implements ConnectionPool {
 				}
 			}
 		}
-		this.getInfo();
+		
+		//this.getInfo();
 	}
 
 	@Override

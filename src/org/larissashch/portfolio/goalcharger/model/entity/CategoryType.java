@@ -16,6 +16,10 @@ public enum CategoryType implements java.io.Serializable {
 	}
 
 	public static CategoryType getCategoryType(String value) {
+		
+		if (value==null || value.equals("")){
+			return null;
+		}
 
 		if (value.equals("CAREER")) {
 			return CategoryType.CAREER;
@@ -38,6 +42,7 @@ public enum CategoryType implements java.io.Serializable {
 		if (value.equals("OTHER")) {
 			return CategoryType.OTHER;
 		}
+		
 		return null;
 	}
 
