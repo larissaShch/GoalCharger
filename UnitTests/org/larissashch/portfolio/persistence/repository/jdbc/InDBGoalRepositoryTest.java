@@ -93,7 +93,7 @@ public class InDBGoalRepositoryTest {
 				
 				KeyWord keyWord;
 				List<KeyWord> keyWords = new ArrayList<>();
-				for(int i=3; i<10; i++){
+				for(int i=1; i<10; i++){
 					keyWord = new KeyWord();
 					keyWord.setValue("test"+i);
 					repository.saveKeyWord(keyWord);
@@ -116,9 +116,9 @@ public class InDBGoalRepositoryTest {
 				assertEquals(step.getId(), index);
 			}
 			
-			if (command == "saveKeyWords") {
+			if (command == "saveKeyWord") {
 				KeyWord keyWord = new KeyWord();
-				keyWord.setValue("word" + index);
+				keyWord.setValue("test" + index);
 				
 				repository.saveKeyWord(keyWord);
 				System.out.println("!!!!!!!!!!!!!!!!!KeyWord with value:"+keyWord.getValue()+" added, id:"+keyWord.getId()+"!!!!!!!!!!!!!!!!!");
@@ -178,7 +178,7 @@ public class InDBGoalRepositoryTest {
 				Thread.sleep(100);
 				System.out.println("StepCount:"+repository.getStepCount());
 			}
-			while (repository.getKeyWordCount()<10) {
+			while (repository.getKeyWordCount()<60) {
 				Thread.sleep(1000);
 				System.out.println("KeyWordCount:"+repository.getKeyWordCount());
 			}

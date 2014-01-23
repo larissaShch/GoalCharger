@@ -742,7 +742,7 @@ public class InDBGoalRepository implements GoalRepository {
 		if(id>0){
 			keyWord.setId(id);
 		}
-
+		System.out.println("ID:"+keyWord.getId()+", Value:"+keyWord.getValue());
 		System.out.println("\nFinished method saveKeyWord(keyWord). value:"
 				+ keyWord.getValue() + " \n\n\n");
 
