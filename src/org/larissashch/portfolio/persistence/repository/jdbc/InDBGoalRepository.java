@@ -90,7 +90,9 @@ public class InDBGoalRepository implements GoalRepository {
 				System.out.println("Table 'Step' was created;");
 
 				statement.executeUpdate("CREATE TABLE KeyWords("
-						+ "id integer," + "keyWord VARCHAR(255)" + ")");
+						+ "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)," 
+						+ "value VARCHAR(255)" 
+						+ ")");
 				System.out.println("Table 'KeyWords' was created;");
 
 				statement.executeUpdate("CREATE TABLE KeyWordsGoal("
@@ -366,7 +368,7 @@ public class InDBGoalRepository implements GoalRepository {
 			try (ResultSet rs = statement.executeQuery(str)) {
 
 				while (rs.next()) {
-					System.out.println("test"+rs.getInt(1));
+					//System.out.println("test"+rs.getInt(1));
 					return rs.getInt(1);
 
 				}
@@ -720,6 +722,8 @@ public class InDBGoalRepository implements GoalRepository {
 	public void saveKeyWord(KeyWord keyWord) {
 		System.out.println("Started method saveKeyWord(keyWord).\n");
 		int id = this.readKeyWord(keyWord.getValue());
+
+		
 		if (id == 0) {
 
 			List<String> fieldsNames = new ArrayList<>();
@@ -732,8 +736,11 @@ public class InDBGoalRepository implements GoalRepository {
 
 			filedsValues.add(keyWord.getValue());
 
-			this.save("KeyWords", fieldsNames, fieldsTypes, filedsValues);
+			keyWord.setId(this.save("KeyWords", fieldsNames, fieldsTypes, filedsValues));
 
+		}
+		if(id>0){
+			keyWord.setId(id);
 		}
 
 		System.out.println("\nFinished method saveKeyWord(keyWord). value:"
@@ -788,8 +795,10 @@ public class InDBGoalRepository implements GoalRepository {
 
 			ReusableConnection connection = connectionPool.getConnection();
 			try (Statement statement = connection.createStatement()) {
-				String str = "select * from KeyWords where value=" + keyWord
-						+ "";
+				
+				String str = "select * from KeyWords where value='" + keyWord
+						+ "'";
+
 				try (ResultSet rs = statement.executeQuery(str)) {
 
 					int id = 0;

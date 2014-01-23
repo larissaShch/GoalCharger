@@ -1,12 +1,16 @@
 package org.larissashch.portfolio.persistence.repository.jdbc;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before; 
 import org.junit.Test;
@@ -45,6 +49,26 @@ public class InDBGoalRepositoryTest {
 				goal.setCategory(CategoryType.OTHER);
 				goal.setStatus(StatusType.NEW);
 				goal.setStartDate(new Date());
+				
+				Step step;
+				List<Step> steps = new ArrayList<>();
+				for(int i=1; i<=5; i++){
+					step = new Step();
+					step.setName("test");
+					repository.saveStep(step);
+					steps.add(step);
+				}
+				goal.setSteps(steps);
+				
+				KeyWord keyWord;
+				List<KeyWord> keyWords = new ArrayList<>();
+				for(int i=1; i<=5; i++){
+					keyWord = new KeyWord();
+					keyWord.setValue("test"+i);
+					repository.saveKeyWord(keyWord);
+					keyWords.add(keyWord);
+				}
+				goal.setKeyWords(keyWords);
 				repository.saveGoal(goal);
 				System.out.println("!!!!!!!!!!!!!!!!!Goal with name:"+goal.getGoalName()+" added, id:"+goal.getId()+"!!!!!!!!!!!!!!!!!");
 			}
@@ -66,6 +90,18 @@ public class InDBGoalRepositoryTest {
 
 				step.setStatus(StatusType.INPROGRESS);
 				step.setStartDate(new Date());
+				
+				KeyWord keyWord;
+				List<KeyWord> keyWords = new ArrayList<>();
+				for(int i=3; i<10; i++){
+					keyWord = new KeyWord();
+					keyWord.setValue("test"+i);
+					repository.saveKeyWord(keyWord);
+					keyWords.add(keyWord);
+					System.out.println("!!!"+keyWord.getId()+"-"+keyWord.getValue());
+				}
+				step.setKeyWords(keyWords);
+				
 				repository.saveStep(step);
 				System.out.println("!!!!!!!!!!!!!!!!!Step with name:"+step.getName()+" added, id:"+step.getId()+"!!!!!!!!!!!!!!!!!");
 			}
@@ -103,51 +139,56 @@ public class InDBGoalRepositoryTest {
 
 	@Before
 	public void setUp(){
+		System.out.println("Start");
 		File file = new File("TestDerbyDBGoalCharger");
 		if(file.exists()){
-			System.out.println("delete");
-			file.delete();
+			try {
+				FileUtils.deleteDirectory(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		if(file.exists()){
-			System.out.println("Still exist!");
-		}
+
 		repository = new InDBGoalRepository(true);
 		
-		System.out.println("Start");
+		
 	}
 
 	@After
 	public void finish(){
-
 		System.out.println("Finish");
 	}
 	@Test
 	public void test1Save() {
 		try {
 			ExecutorService executor = Executors.newFixedThreadPool(10);
-			for (int i = 1; i <= 2; i++) {
+			for (int i = 1; i <= 50; i++) {
 				executor.submit(new TestTask("saveGoal", repository, i));
-				//executor.submit(new TestTask("saveStep", repository, i+50));
-				//executor.submit(new TestTask("saveKeyWord", repository, i+100));
+				executor.submit(new TestTask("saveStep", repository, i+50));
+				executor.submit(new TestTask("saveKeyWord", repository, i+100));
 
 			}
-			while (repository.getGoalCount()<2) {
+			while (repository.getGoalCount()<50) {
 				Thread.sleep(1000);
 				System.out.println("GoalCount:"+repository.getGoalCount());
+				
 			}
-			/*while (50 >= repository.getStepCount()) {
+			while (repository.getStepCount()<300) {
 				Thread.sleep(100);
+				System.out.println("StepCount:"+repository.getStepCount());
 			}
-			while (50 >= repository.getKeyWordCount()) {
-				Thread.sleep(10);
-			}*/
+			while (repository.getKeyWordCount()<10) {
+				Thread.sleep(1000);
+				System.out.println("KeyWordCount:"+repository.getKeyWordCount());
+			}
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		assertEquals(2, this.repository.getGoalCount());
-		//assertEquals(50, this.repository.getStepCount());
-		//assertEquals(50, this.repository.getKeyWordCount());
+		assertEquals(50, this.repository.getGoalCount());
+		assertEquals(300, this.repository.getStepCount());
+		assertEquals(60, this.repository.getKeyWordCount());
 
 	}
 
