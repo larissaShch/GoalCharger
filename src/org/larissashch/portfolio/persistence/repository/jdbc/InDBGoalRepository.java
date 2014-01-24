@@ -29,6 +29,7 @@ public class InDBGoalRepository implements GoalRepository {
 
 	protected String connectionUrl;
 	private ReusableConnectionPool connectionPool;
+	private boolean isKeyWordsLocked;
 
 	public InDBGoalRepository(boolean testFlag) {
 		this.dbName = "DerbyDBGoalCharger";
@@ -45,7 +46,7 @@ public class InDBGoalRepository implements GoalRepository {
 		if (!this.isDBExist()) {
 			this.createNewDB();
 		}
-
+		isKeyWordsLocked = false;
 	}
 
 	private boolean isDBExist() {
@@ -84,15 +85,14 @@ public class InDBGoalRepository implements GoalRepository {
 								+ "name VARCHAR(255),"
 								+ "description VARCHAR(750),"
 								+ "status VARCHAR(100)," + "startDate DATE,"
-								+ "targetDate DATE" 
-								+ ")");
+								+ "targetDate DATE" + ")");
 
 				System.out.println("Table 'Step' was created;");
 
-				statement.executeUpdate("CREATE TABLE KeyWords("
-						+ "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)," 
-						+ "value VARCHAR(255)" 
-						+ ")");
+				statement
+						.executeUpdate("CREATE TABLE KeyWords("
+								+ "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
+								+ "value VARCHAR(255)" + ")");
 				System.out.println("Table 'KeyWords' was created;");
 
 				statement.executeUpdate("CREATE TABLE KeyWordsGoal("
@@ -108,7 +108,7 @@ public class InDBGoalRepository implements GoalRepository {
 				statement.executeUpdate("CREATE TABLE GoalSteps("
 						+ "goalId integer," + "stepId integer" + ")");
 				System.out.println("Table 'GoalSteps' was created;");
-				
+
 				System.out.println("DB created. Release connection.");
 				connectionPool.releaseConnection(connection);
 			}
@@ -205,7 +205,7 @@ public class InDBGoalRepository implements GoalRepository {
 
 		str = str + ")";
 
-		//System.out.println(str);
+		// System.out.println(str);
 
 		try (PreparedStatement statement = connection.prepareStatement(str)) {
 			for (int i = 0; i < filedsValues.size(); i++) {
@@ -222,7 +222,7 @@ public class InDBGoalRepository implements GoalRepository {
 
 					while (rs.next()) {
 						lastId = rs.getInt(1);
-						//System.out.println("New record with id:" + lastId);
+						// System.out.println("New record with id:" + lastId);
 					}
 				}
 			}
@@ -231,7 +231,8 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
-			System.out.println("Save method for table:"+tableName+". Release connection.");
+			System.out.println("Save method for table:" + tableName
+					+ ". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 		return lastId;
@@ -253,7 +254,7 @@ public class InDBGoalRepository implements GoalRepository {
 
 		str = str + " WHERE id=" + id;
 
-		//System.out.println(str);
+		// System.out.println(str);
 
 		try (PreparedStatement statement = connection.prepareStatement(str)) {
 			for (int i = 0; i < filedsValues.size(); i++) {
@@ -267,7 +268,8 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
-			System.out.println("Updated method for table:"+tableName+". Release connection.");
+			System.out.println("Updated method for table:" + tableName
+					+ ". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 	}
@@ -284,7 +286,8 @@ public class InDBGoalRepository implements GoalRepository {
 					"Error in method delete(String tableName, long id), id:"
 							+ id + ", tableName:" + tableName);
 		} finally {
-			System.out.println("Delete method for table:"+tableName+". Release connection.");
+			System.out.println("Delete method for table:" + tableName
+					+ ". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 	}
@@ -325,7 +328,8 @@ public class InDBGoalRepository implements GoalRepository {
 					e.printStackTrace();
 					throw new RuntimeException("");
 				} finally {
-					System.out.println("UpdatedList method for table:"+tableName+". Release connection.");
+					System.out.println("UpdatedList method for table:"
+							+ tableName + ". Release connection.");
 					connectionPool.releaseConnection(connection);
 				}
 			}
@@ -354,7 +358,8 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
-			System.out.println("getListOfId method for table:"+tableName+". Release connection.");
+			System.out.println("getListOfId method for table:" + tableName
+					+ ". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 
@@ -368,7 +373,7 @@ public class InDBGoalRepository implements GoalRepository {
 			try (ResultSet rs = statement.executeQuery(str)) {
 
 				while (rs.next()) {
-					//System.out.println("test"+rs.getInt(1));
+					// System.out.println("test"+rs.getInt(1));
 					return rs.getInt(1);
 
 				}
@@ -378,7 +383,8 @@ public class InDBGoalRepository implements GoalRepository {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		} finally {
-			System.out.println("GetCount method for table:"+tableName+". Release connection.");
+			System.out.println("GetCount method for table:" + tableName
+					+ ". Release connection.");
 			connectionPool.releaseConnection(connection);
 		}
 
@@ -723,26 +729,34 @@ public class InDBGoalRepository implements GoalRepository {
 		System.out.println("Started method saveKeyWord(keyWord).\n");
 		int id = this.readKeyWord(keyWord.getValue());
 
-		
-		if (id == 0) {
+		if (!isKeyWordsLocked) {
+			isKeyWordsLocked = true;
+			if (id == 0) {
 
-			List<String> fieldsNames = new ArrayList<>();
-			fieldsNames.add("value");
+				List<String> fieldsNames = new ArrayList<>();
+				fieldsNames.add("value");
 
-			List<String> fieldsTypes = new ArrayList<>();
-			fieldsTypes.add("String");
+				List<String> fieldsTypes = new ArrayList<>();
+				fieldsTypes.add("String");
 
-			List<Object> filedsValues = new ArrayList<>();
+				List<Object> filedsValues = new ArrayList<>();
 
-			filedsValues.add(keyWord.getValue());
+				filedsValues.add(keyWord.getValue());
 
-			keyWord.setId(this.save("KeyWords", fieldsNames, fieldsTypes, filedsValues));
+				keyWord.setId(this.save("KeyWords", fieldsNames, fieldsTypes,
+						filedsValues));
 
+			}
+			if (id > 0) {
+				keyWord.setId(id);
+			}
+			isKeyWordsLocked = false;
+		} else {
+			System.out.println("saveKeyWord method was locked. ");
+			this.saveKeyWord(keyWord);
 		}
-		if(id>0){
-			keyWord.setId(id);
-		}
-		System.out.println("ID:"+keyWord.getId()+", Value:"+keyWord.getValue());
+		System.out.println("ID:" + keyWord.getId() + ", Value:"
+				+ keyWord.getValue());
 		System.out.println("\nFinished method saveKeyWord(keyWord). value:"
 				+ keyWord.getValue() + " \n\n\n");
 
@@ -795,7 +809,7 @@ public class InDBGoalRepository implements GoalRepository {
 
 			ReusableConnection connection = connectionPool.getConnection();
 			try (Statement statement = connection.createStatement()) {
-				
+
 				String str = "select * from KeyWords where value='" + keyWord
 						+ "'";
 

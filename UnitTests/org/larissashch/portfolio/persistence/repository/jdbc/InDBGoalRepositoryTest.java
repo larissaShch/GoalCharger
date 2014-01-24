@@ -178,7 +178,7 @@ public class InDBGoalRepositoryTest {
 				Thread.sleep(100);
 				System.out.println("StepCount:"+repository.getStepCount());
 			}
-			while (repository.getKeyWordCount()<60) {
+			while (repository.getKeyWordCount()<59) {
 				Thread.sleep(1000);
 				System.out.println("KeyWordCount:"+repository.getKeyWordCount());
 			}
@@ -188,7 +188,7 @@ public class InDBGoalRepositoryTest {
 		}
 		assertEquals(50, this.repository.getGoalCount());
 		assertEquals(300, this.repository.getStepCount());
-		assertEquals(60, this.repository.getKeyWordCount());
+		assertEquals(59, this.repository.getKeyWordCount());
 
 	}
 
