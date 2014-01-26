@@ -189,7 +189,7 @@ public class InDBGoalRepositoryTest {
 		}
 		assertEquals(50, this.repository.getGoalCount());
 		assertEquals(300, this.repository.getStepCount());
-		assertEquals(59, this.repository.getKeyWordCount());
+		assertEquals(60, this.repository.getKeyWordCount());
 
 	}
 
