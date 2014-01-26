@@ -14,12 +14,13 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before; 
 import org.junit.Test;
-import org.larissashch.portfolio.persistence.repository.GoalRepository;
 import org.larissashch.portfolio.goalcharger.model.entity.CategoryType;
 import org.larissashch.portfolio.goalcharger.model.entity.Goal;
 import org.larissashch.portfolio.goalcharger.model.entity.KeyWord;
 import org.larissashch.portfolio.goalcharger.model.entity.StatusType;
 import org.larissashch.portfolio.goalcharger.model.entity.Step;
+import org.larissashch.portfolio.goalchatge.persistence.repository.GoalRepository;
+import org.larissashch.portfolio.goalchatge.persistence.repository.jdbc.InDBGoalRepository;
 
 public class InDBGoalRepositoryTest {
 	

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.larissashch.portfolio.goalcharger.model.entity.KeyWord;
-import org.larissashch.portfolio.persistence.repository.jdbc.InDBGoalRepository;
+import org.larissashch.portfolio.goalchatge.persistence.repository.jdbc.InDBGoalRepository;
 
 public class Starter {
 
