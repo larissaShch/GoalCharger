@@ -179,7 +179,7 @@ public class InDBGoalRepositoryTest {
 				Thread.sleep(100);
 				System.out.println("StepCount:"+repository.getStepCount());
 			}
-			while (repository.getKeyWordCount()<59) {
+			while (repository.getKeyWordCount()<60) {
 				Thread.sleep(1000);
 				System.out.println("KeyWordCount:"+repository.getKeyWordCount());
 			}
