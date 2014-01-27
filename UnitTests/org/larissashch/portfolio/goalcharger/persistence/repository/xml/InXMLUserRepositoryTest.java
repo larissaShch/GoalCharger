@@ -2,12 +2,14 @@ package org.larissashch.portfolio.goalcharger.persistence.repository.xml;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
 import org.junit.Before;  
 import org.junit.Test;
 import org.larissashch.portfolio.goalcharger.model.entity.Customer;
@@ -37,8 +39,15 @@ public class InXMLUserRepositoryTest{
 		public void run() {
 			if (command == "saveCustomer") {
 				Customer customer = new Customer();
+				customer.setCreateDate(new Date());
+				customer.setAutoDeleteFlag(true);
+				customer.setTesterAccountFlag(true);
+				customer.setBirthDate(new Date());
+				customer.setEmail("customer"+index+"@gmail.com");
 				customer.setFirstName("name" + index);
-
+				customer.setLastName("surname"+index);
+				customer.setPassword("123123123");
+				
 				repository.saveCustomer(customer);
 				list.add(repository.readCustomer(index));
 
@@ -56,10 +65,25 @@ public class InXMLUserRepositoryTest{
 		}
 	}
 
+	@Before
+	public void setUp(){
+		System.out.println("Start");
+		File file = new File("TestCustomer.xml");
+		file.delete();
+		file = new File("TestAdministrator.xml");
+		file.delete();
+		repository = new InXMLUserRepository(true);
+		
+		
+	}
+
+	@After
+	public void finish(){
+		System.out.println("Finish");
+	}
 
 	@Test
 	public void test1Save() {
-		repository = new InXMLUserRepository(true);
 		List<User> list = new ArrayList<>();
 
 
@@ -86,37 +110,28 @@ public class InXMLUserRepositoryTest{
 
 	@Test
 	public void test2Delete() {
-		File file = new File("TestCustomer.xml");
-		file.delete();
-		file = new File("TestAdministrator.xml");
-		file.delete();
-		repository = new InXMLUserRepository(true);
-		Customer customer;
 
-		int quantityBefore = repository.getCustomerCount();
-		int quantityAfter = quantityBefore;
+		Customer customer;
 		
 		try {
-			for(int i = 1; i < 50; i++){
+			for(int i = 1; i <= 100; i++){
 				customer = new Customer();
 				customer.setId(i);
 				customer.setFirstName("name" + i);
 				repository.saveCustomer(customer);
-				quantityAfter++;
 			}
 			
-			for (int i = 1; i < 20; i++) {
+			for (int i = 1; i <= 20; i++) {
 
 				Thread thread;
 				thread = new Thread(new TestTask("deleteCustomer", repository, i, null));
 				thread.start();
 
 				Thread.sleep(10);
-				quantityAfter--;
 
 			}
 			
-			while (quantityAfter < repository.getCustomerCount()) {
+			while (repository.getCustomerCount()>80) {
 				Thread.sleep(100);
 			}
 			
@@ -125,12 +140,45 @@ public class InXMLUserRepositoryTest{
 			e.printStackTrace();
 		}
 
-		assertEquals(quantityAfter, this.repository.getCustomerCount());
+		assertEquals(80, this.repository.getCustomerCount());
 
 	}
 	@Test
 	public void test3Read() {
+		Customer customer;
 		
+		try {
+			for(int i = 1; i <= 50; i++){
+				customer = new Customer();
+				customer.setId(i);
+				customer.setFirstName("name" + i);
+				repository.saveCustomer(customer);
+			}
+			
+			while (repository.getCustomerCount()>50) {
+				Thread.sleep(100);
+			}
+			
+			for (int i = 1; i <= 20; i++) {
+
+				Thread thread;
+				thread = new Thread(new TestTask("readCustomer", repository, i, null));
+				thread.start();
+
+				Thread.sleep(10);
+
+
+			}
+			
+			
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+
 	}
 
 }
