@@ -10,6 +10,7 @@ import org.larissashch.portfolio.goalchatge.persistence.repository.jdbc.InDBGoal
 public class Starter {
 
 	public static void main(String[] args) {
+		
 		InDBGoalRepository repository = new InDBGoalRepository(true);
 		KeyWord keyWord = new KeyWord();
 		keyWord.setValue("test");
