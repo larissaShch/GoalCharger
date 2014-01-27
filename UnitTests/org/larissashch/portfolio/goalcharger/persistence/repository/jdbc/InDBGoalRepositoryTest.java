@@ -1,4 +1,4 @@
-package org.larissashch.portfolio.persistence.repository.jdbc;
+package org.larissashch.portfolio.goalcharger.persistence.repository.jdbc;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +19,8 @@ import org.larissashch.portfolio.goalcharger.model.entity.Goal;
 import org.larissashch.portfolio.goalcharger.model.entity.KeyWord;
 import org.larissashch.portfolio.goalcharger.model.entity.StatusType;
 import org.larissashch.portfolio.goalcharger.model.entity.Step;
-import org.larissashch.portfolio.goalchatge.persistence.repository.GoalRepository;
-import org.larissashch.portfolio.goalchatge.persistence.repository.jdbc.InDBGoalRepository;
+import org.larissashch.portfolio.goalcharger.persistence.repository.GoalRepository;
+import org.larissashch.portfolio.goalcharger.persistence.repository.jdbc.InDBGoalRepository;
 
 public class InDBGoalRepositoryTest {
 	

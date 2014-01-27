@@ -1,4 +1,4 @@
-package org.larissashch.portfolio.goalchatge.persistence.repository.jdbc;
+package org.larissashch.portfolio.goalcharger.persistence.repository.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
