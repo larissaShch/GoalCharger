@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before; 
 import org.junit.Test;
+import org.larissashch.portfolio.goalcharger.model.entity.ApplicationProperties;
 import org.larissashch.portfolio.goalcharger.model.entity.CategoryType;
 import org.larissashch.portfolio.goalcharger.model.entity.Goal;
 import org.larissashch.portfolio.goalcharger.model.entity.KeyWord;
@@ -141,7 +142,7 @@ public class InDBGoalRepositoryTest {
 	@Before
 	public void setUp(){
 		System.out.println("Start");
-		File file = new File("TestDerbyDBGoalCharger");
+		File file = new File(ApplicationProperties.DB_PATH + "TestDerbyDBGoalCharger");
 		if(file.exists()){
 			try {
 				FileUtils.deleteDirectory(file);

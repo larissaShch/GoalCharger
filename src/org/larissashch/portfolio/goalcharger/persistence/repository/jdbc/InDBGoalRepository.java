@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.larissashch.portfolio.goalcharger.model.entity.Administrator;
+import org.larissashch.portfolio.goalcharger.model.entity.ApplicationProperties;
 import org.larissashch.portfolio.goalcharger.model.entity.BaseEntity;
 import org.larissashch.portfolio.goalcharger.model.entity.CategoryType;
 import org.larissashch.portfolio.goalcharger.model.entity.Customer;
@@ -39,7 +40,7 @@ public class InDBGoalRepository implements GoalRepository {
 		if (testFlag) {
 			dbName = "Test" + dbName;
 		}
-
+		this.dbName = ApplicationProperties.DB_PATH + this.dbName;
 		connectionUrl = "jdbc:derby:" + dbName + ";create=true";
 		connectionPool = new ReusableConnectionPool(connectionUrl, 50);
 

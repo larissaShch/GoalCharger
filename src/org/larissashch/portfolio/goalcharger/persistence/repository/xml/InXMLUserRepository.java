@@ -1,6 +1,7 @@
 package org.larissashch.portfolio.goalcharger.persistence.repository.xml;
 
 import org.larissashch.portfolio.goalcharger.model.entity.Administrator;
+import org.larissashch.portfolio.goalcharger.model.entity.ApplicationProperties;
 import org.larissashch.portfolio.goalcharger.model.entity.Customer;
 import org.larissashch.portfolio.goalcharger.model.entity.User;
 
@@ -45,8 +46,8 @@ public class InXMLUserRepository implements UserRepository {
 		if (isTest) {
 			testName = "Test";
 		}
-		customerFileName = testName + "Customer.xml";
-		administratorFileName = testName + "Administrator.xml";
+		customerFileName = ApplicationProperties.DB_PATH + testName + "Customer.xml";
+		administratorFileName = ApplicationProperties.DB_PATH + testName + "Administrator.xml";
 		
 		File file;
 		file = new File(customerFileName);

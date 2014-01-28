@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.After;
 import org.junit.Before;  
 import org.junit.Test;
+import org.larissashch.portfolio.goalcharger.model.entity.ApplicationProperties;
 import org.larissashch.portfolio.goalcharger.model.entity.Customer;
 import org.larissashch.portfolio.goalcharger.model.entity.User;
 import org.larissashch.portfolio.goalcharger.persistence.repository.UserRepository;
@@ -68,9 +69,9 @@ public class InXMLUserRepositoryTest{
 	@Before
 	public void setUp(){
 		System.out.println("Start");
-		File file = new File("TestCustomer.xml");
+		File file = new File(ApplicationProperties.DB_PATH + "TestCustomer.xml");
 		file.delete();
-		file = new File("TestAdministrator.xml");
+		file = new File(ApplicationProperties.DB_PATH + "TestAdministrator.xml");
 		file.delete();
 		repository = new InXMLUserRepository(true);
 		
