@@ -47,7 +47,7 @@ public class InXMLUserRepositoryTest{
 				customer.setEmail("customer"+index+"@gmail.com");
 				customer.setFirstName("name" + index);
 				customer.setLastName("surname"+index);
-				customer.setPassword("123123123");
+				customer.setPassword("Pw:123123123"+index);
 				
 				repository.saveCustomer(customer);
 				list.add(repository.readCustomer(index));
@@ -93,7 +93,7 @@ public class InXMLUserRepositoryTest{
 
 		try {
 			ExecutorService executor = Executors.newFixedThreadPool(10);
-			for (int i = 1; i <= 100; i++) {
+			for (int i = 1; i <= 50; i++) {
 				executor.submit(new TestTask("saveCustomer", repository, i,
 						list));
 				quantityAfter++;
@@ -112,14 +112,17 @@ public class InXMLUserRepositoryTest{
 	@Test
 	public void test2Delete() {
 
-		Customer customer;
-		
+		List<User> list = new ArrayList<>();
+
 		try {
+			ExecutorService executor = Executors.newFixedThreadPool(10);
 			for(int i = 1; i <= 100; i++){
-				customer = new Customer();
-				customer.setId(i);
-				customer.setFirstName("name" + i);
-				repository.saveCustomer(customer);
+
+				executor.submit(new TestTask("saveCustomer", repository, i,
+						list));
+			}
+			while (repository.getCustomerCount()<100) {
+				Thread.sleep(100);
 			}
 			
 			for (int i = 1; i <= 20; i++) {

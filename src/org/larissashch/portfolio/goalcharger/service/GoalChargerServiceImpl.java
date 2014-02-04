@@ -174,4 +174,16 @@ public class GoalChargerServiceImpl implements GoalChargerService {
 		
 	}
 
+	@Override
+	public Customer getCustomer(String email, String password) {
+		return this.userRepository.getCustomer(email, password);
+	}
+
+	@Override
+	public Administrator getAdministrator(String email, String password) {
+		return this.userRepository.getAdministrator(email, password);
+	}
+
+
+
 }

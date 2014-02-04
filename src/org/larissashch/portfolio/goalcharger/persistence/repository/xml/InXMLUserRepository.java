@@ -18,6 +18,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -31,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Map;
 
 public class InXMLUserRepository implements UserRepository {
 
@@ -514,6 +517,63 @@ public class InXMLUserRepository implements UserRepository {
 			this.saveAdministrator((Administrator)user);
 		}
 		
+	}
+
+
+	@Override
+	public Customer getCustomer(String email, String password) {
+		String exceptionMessage = "Error Message: \nMethod: getCustomer(String email, String password); \nemail: "
+				+ email;
+		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+		UserHandler userHandler = new UserHandler("customer");
+		try {
+			SAXParser saxParser = parserFactory.newSAXParser();
+			saxParser.parse(new File(customerFileName), userHandler);
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(exceptionMessage);
+		}
+		
+		Customer customer = null;
+		Map<Integer, String> data = userHandler.getDate();
+		for(Map.Entry<Integer, String> record:data.entrySet()){
+			//System.out.println("Customer: "+record.getValue());
+			
+			if(record.getValue().equalsIgnoreCase(email+password)){
+				//System.out.println("ID: "+record.getKey());
+				customer = this.readCustomer(record.getKey());
+			}
+			
+		}
+		
+		return customer;
+	}
+
+
+	@Override
+	public Administrator getAdministrator(String email, String password) {
+		String exceptionMessage = "Error Message: \nMethod: getAdministrator(String email, String password); \nemail: "
+				+ email;
+		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+		UserHandler userHandler = new UserHandler("administrator");
+		try {
+			SAXParser saxParser = parserFactory.newSAXParser();
+			saxParser.parse(new File(administratorFileName), userHandler);
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(exceptionMessage);
+		}
+		
+		Administrator administrator = null;
+		Map<Integer, String> data = userHandler.getDate();
+		for(Map.Entry<Integer, String> entrySet:data.entrySet()){
+			if(entrySet.getValue().equalsIgnoreCase(email+password)){
+				administrator = this.readAdministrator(entrySet.getKey());
+			}
+			System.out.println("Administrator: "+entrySet.getValue());
+		}
+		
+		return administrator;
 	}
 
 

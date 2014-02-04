@@ -41,6 +41,9 @@ public interface GoalChargerService {
 		public int readKeyWord(String value);
 		public void deleteKeyWord(int id);
 		
+		public Customer getCustomer(String email, String password);
+		public Administrator getAdministrator(String email, String password);
+		
 		
 
 }

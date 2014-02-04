@@ -22,5 +22,9 @@ public interface UserRepository {
 	int getCustomerCount();
 
 	int getAdministratorCount();
+	
+	Customer getCustomer (String email, String password);
+	
+	Administrator getAdministrator (String email, String password);
 
 }
