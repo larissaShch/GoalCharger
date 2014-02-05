@@ -13,7 +13,7 @@
 	<p>
 		Test page
 		
-		Привет!   
+		Привет!
 	</p>
 	<%! private int summ; %>
 	<% 
