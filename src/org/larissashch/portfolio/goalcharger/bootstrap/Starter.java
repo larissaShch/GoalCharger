@@ -14,7 +14,7 @@ import org.larissashch.portfolio.goalcharger.persistence.repository.xml.InXMLUse
 public class Starter {
 
 	public static void main(String[] args) {
-		/*  
+		/*    
 		InDBGoalRepository repository = new InDBGoalRepository(true);
 		KeyWord keyWord = new KeyWord();
 		keyWord.setValue("test");
