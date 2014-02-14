@@ -12,7 +12,7 @@
 	<div id="container">
 		<div id="main_page">
 			<div id="main_page_menu">
-				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">Log in</a></div></div>
+				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="#login_page">Log in</a></div></div>
 				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">My Account</a></div></div>
 				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">My Goals</a></div></div>
 				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">Start a New Goal</a></div></div>
@@ -20,17 +20,32 @@
 			</div>
 			<div class="content">
 				<div id="goal_charger_logo">
-					<a id="big_arrow_down" href="">&nbsp;</a>
+					<a id="big_arrow_down" href="#login_page"></a>
 				</div>
 			</div>
 		</div>
-		<div id="login_page">
-			<div id="login_logo">
-				<div id="login_form">
-				</div>
-				<div id="join_now_form">
-				</div>
-			</div>
+		<div id="login_page" name="login_page">
+			<table id="login_page_content_table">
+				<tr>
+					<td>
+						<div id="login_logo"></div>
+					</td>
+					<td rowspan="2">
+						<div id="join_now_form">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="login_form">
+							<input type="text" value="E-mail"><br>
+							<input type="password" value="Password"><br>
+							
+							<input type="button" id="login_button">
+						</div>
+					</td>
+				</tr>
+			</table>
 		</div>
 
 		<div id="my_account">
