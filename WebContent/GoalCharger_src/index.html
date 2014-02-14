@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="style.css">
+	<script src="script.js"></script>
+
+	<title>Goal Charger</title>
+</head>
+<body>
+	
+	
+	<div id="container">
+		<div id="main_page">
+			<div id="main_page_menu">
+				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">Log in</a></div></div>
+				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">My Account</a></div></div>
+				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">My Goals</a></div></div>
+				<div class="main_page_manu_item"><div id="m_p_m_i_left"><a href="">Start a New Goal</a></div></div>
+				
+			</div>
+			<div class="content">
+				<div id="goal_charger_logo">
+					<a id="big_arrow_down" href="">&nbsp;</a>
+				</div>
+			</div>
+		</div>
+		<div id="login_page">
+			<div id="login_logo">
+				<div id="login_form">
+				</div>
+				<div id="join_now_form">
+				</div>
+			</div>
+		</div>
+
+		<div id="my_account">
+		</div>
+		<div id="my_goals">
+		</div>
+		<div id="goal">
+		</div>
+		<div id="step">
+		</div>
+	</div>
+</body>
+		<script type="text/javascript">
+			function resizableDiv(){
+				h = document.documentElement.clientHeight;
+				if(h<400){
+					h = 400;
+				}
+				document.getElementById('main_page').style.height = h+'px';
+				document.getElementById('login_page').style.height = h+'px';
+				document.getElementById('my_account').style.height = h+'px';
+				document.getElementById('my_goals').style.height = h+'px';
+				document.getElementById('goal').style.height = h+'px';
+				document.getElementById('step').style.height = h+'px';
+				
+				
+
+			}
+			setInterval("resizableDiv();", 50);
+			
+		</script>
+</html>
