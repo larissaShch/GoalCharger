@@ -2,6 +2,7 @@ package org.larissashch.portfolio.goalcharger.bootstrap;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.larissashch.portfolio.goalcharger.model.entity.ApplicationProperties;
@@ -34,13 +35,28 @@ public class Starter {
 		}
 		System.out.println(ApplicationProperties.DB_PATH);
 		*/
-		UserRepository userRepository = new InXMLUserRepository(true);
+		/*UserRepository userRepositoryTest = new InXMLUserRepository(true);
 		
-		Customer customer = userRepository.getCustomer("customer72@gmail.com", "Pw:12312312372");
+		Customer customer = userRepositoryTest.getCustomer("customer72@gmail.com", "Pw:12312312372");
 		System.out.println(customer.getFirstName());
-		
+		*/
 		/*customer = userRepository.getCustomer("Customer732@gmail.com", "1231231234");
 		System.out.println(customer);*/
+		
+		
+		UserRepository userRepository = new InXMLUserRepository(false);
+		Customer customer = new Customer();
+		customer.setAutoDeleteFlag(true);
+		customer.setTesterAccountFlag(false);
+		customer.setCreateDate(new Date());
+		customer.setEmail("larisa@ya.ru");
+		customer.setFirstName("Larisa");
+		customer.setLastName("S");
+		customer.setPassword("123456");
+		
+		userRepository.saveCustomer(customer);
+		System.out.println(customer.getId());
+		
 	}
 
 }
