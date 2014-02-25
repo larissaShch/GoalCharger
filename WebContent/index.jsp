@@ -27,37 +27,25 @@
 			</div>
 		</div>
 		<div id="login_page" name="login_page">
-			<table id="login_page_content_table" border="1px">
-				<tr>
-					<td>
-						<div id="login_logo"></div>
-					</td>
-					<td width="50px">
-						--
-					</td>
-					<td>
-						<div id="signup_logo"></div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div id="login_form">
-							<form action="index.jsp" method="POST">
-								<input class="login_form_input" type="text" value="E-mail" name="email"><br>
-								<input class="login_form_input" type="password" value="Password" name="password"><br>
+			<div id="login_page_content">
+				<div id="login_logo"></div>
+				<div id="signup_logo"></div>
+				<br>
+				<div id="login_form">
+					<form action="index.jsp" method="POST">
+						<input class="login_form_input" type="text" value="E-mail" name="email"><br>
+						<input class="login_form_input" type="password" value="Password" name="password"><br>
 							
-								<input type="submit" id="login_button" value="" name="login">
-							</form>
-						</div>
-					</td>
-					<td></td>
-					<td>
-						<div id="join_now_form">
-							test
-						</div>
-					</td>
-				</tr>
-			</table>
+						<input type="submit" id="login_button" value="" name="login">
+					</form>
+				</div>
+				
+				<div id="join_now_form">
+					test
+				</div>
+				
+			</div>
+			
 		</div>
 
 		<div id="my_account">
