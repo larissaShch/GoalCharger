@@ -27,14 +27,16 @@
 			</div>
 		</div>
 		<div id="login_page" name="login_page">
-			<table id="login_page_content_table">
+			<table id="login_page_content_table" border="1px">
 				<tr>
 					<td>
 						<div id="login_logo"></div>
 					</td>
-					<td rowspan="2">
-						<div id="join_now_form">
-						</div>
+					<td width="50px">
+						--
+					</td>
+					<td>
+						<div id="signup_logo"></div>
 					</td>
 				</tr>
 				<tr>
@@ -46,6 +48,12 @@
 							
 								<input type="submit" id="login_button" value="" name="login">
 							</form>
+						</div>
+					</td>
+					<td></td>
+					<td>
+						<div id="join_now_form">
+							test
 						</div>
 					</td>
 				</tr>
