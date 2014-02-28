@@ -10,8 +10,15 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.larissashch.portfolio.goalcharger.model.entity.Customer;
+import org.larissashch.portfolio.goalcharger.persistence.repository.GoalRepository;
+import org.larissashch.portfolio.goalcharger.persistence.repository.UserRepository;
+import org.larissashch.portfolio.goalcharger.persistence.repository.jdbc.InDBGoalRepository;
+import org.larissashch.portfolio.goalcharger.persistence.repository.xml.InXMLUserRepository;
+import org.larissashch.portfolio.goalcharger.service.GoalChargerService;
+import org.larissashch.portfolio.goalcharger.service.GoalChargerServiceImpl;
 
 /**
  * Servlet implementation class Controller
@@ -19,6 +26,9 @@ import org.larissashch.portfolio.goalcharger.model.entity.Customer;
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private GoalChargerService service;
+	private GoalRepository goalRepository;
+	private UserRepository userRepository;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -26,6 +36,13 @@ public class Controller extends HttpServlet {
     public Controller() {
         super();
         // TODO Auto-generated constructor stub
+        
+        service = new GoalChargerServiceImpl();
+        goalRepository = new InDBGoalRepository(false);
+        userRepository = new InXMLUserRepository(false);
+        
+        service.setGoalRepository(goalRepository);
+        service.setUserRepository(userRepository);
     }
 
 	/**
@@ -46,21 +63,28 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		logIn(request, response);
+	}
+	
+	private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		Customer customer;
 		Integer id;
 		String button = request.getParameter("button");
 		String forwarTo = "/index.jsp";
 		String logged_in = "no";
 		if(button.equals("login")){
-			id = logIn(request.getParameter("email"), request.getParameter("password"));
+			customer = service.getCustomer(request.getParameter("email"), request.getParameter("password"));
+			id = customer.getId();
 			if(id!=null){
 				//set session
-				//set cookie
+				HttpSession session = request.getSession();
+				session.setAttribute("customer_id", id);
 				logged_in = "yes";
-				//forward
+				forwarTo = "/index.jsp";
 				
 			}else{
-				//forward
-				//forwarTo="/error.jsp";
+				logged_in = "no";
+				forwarTo="/error.jsp";
 			}
 			Cookie cookie = new Cookie("logged_in", logged_in);
 			cookie.setMaxAge(1*24*60*60);
@@ -70,10 +94,6 @@ public class Controller extends HttpServlet {
 			dispatcher.forward(request, response);
 		}
 		System.out.println(button);
-	}
-	
-	private Integer logIn(String login, String password){
-		return null;
 	}
 	
 	private void logOut(){
