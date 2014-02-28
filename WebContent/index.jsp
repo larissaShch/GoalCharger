@@ -5,6 +5,19 @@
 
 <%@ page errorPage="error.jsp" %>
 
+<% 
+	String cookieName;
+	String logged_in = "no";
+	Cookie []cookies = request.getCookies();
+	for(int i = 0; i < cookies.length; i++){
+		cookieName = cookies[i].getName();
+		if(cookieName.equals("logged_in")){
+			logged_in = cookies[i].getValue();
+			break;
+		}
+	}
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -17,7 +30,11 @@
 	<div id="container">
 		<div id="main_page">
 			<div id="main_page_menu">
-				<%@ include file="menu.jsp" %>
+
+
+				<jsp:include page="menu.jsp">
+				<jsp:param name="logged_in" value='<%=logged_in%>'/>
+				</jsp:include>
 				
 			</div>
 			<div class="content">
@@ -26,53 +43,22 @@
 				</div>
 			</div>
 		</div>
-		<div id="login_page" name="login_page">
-			<div id="login_page_content">
-				<div id="login_logo"></div>
-				<div id="signup_logo"></div>
-				<br>
-				<div id="login_form">
-					<form action="index.jsp" method="POST">
-						<input class="login_form_input" type="text" value="E-mail" name="email"><br>
-						<input class="login_form_input" type="password" value="Password" name="password"><br>
-							
-						<input type="submit" id="login_button" value="" name="login">
-					</form>
-				</div>
-				
-				<div id="join_now_form">
-					test
-				</div>
-				
-			</div>
-			
-		</div>
+		<% if(logged_in.equals("no")) {%>
+			<%@ include file="login_register_page.jsp" %>
+		<%} 
+		  if(logged_in.equals("yes")){
+		%>
+			<%@ include file="logged_in_page.jsp" %>
+		<%} %>
 
-		<div id="my_account">
-			<% 
-				String email = "test";
-				String password = "test";
-
-				email = request.getParameter("email");
-				password = request.getParameter("password");
-				
-			%>
-			<%= email %><br>
-			<%= password %>
-		</div>
-		<div id="my_goals">
-		</div>
-		<div id="goal">
-		</div>
-		<div id="step">
-		</div>
+		
 	</div>
 </body>
 		<script type="text/javascript">
 			function resizableDiv(){
 				h = document.documentElement.clientHeight;
-				if(h<400){
-					h = 400;
+				if(h<600){
+					h = 600;
 				}
 				document.getElementById('main_page').style.height = h+'px';
 				document.getElementById('login_page').style.height = h+'px';
