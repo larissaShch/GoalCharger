@@ -56,6 +56,15 @@ public class Controller extends HttpServlet {
 		out.write("<h1>Succes!!!</h1>");
 		out.flush();
 		out.close();*/
+		
+		if(request.getParameter("logout").equals("1")){
+			Cookie cookie = new Cookie("logged_in", "no");
+			cookie.setMaxAge(60);
+			response.addCookie(cookie);
+		}
+		
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/");
+		dispatcher.forward(request, response);
 	}
 
 	/**
@@ -63,44 +72,54 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		logIn(request, response);
+		System.out.println("doPostMethod");
+		
+		String button = request.getParameter("button");
+		if(button.equals("login")){
+			logIn(request, response);
+		}
+		if(button.equals("signup")){
+			signUp(request, response);
+		}
+		System.out.println(button);
 	}
 	
 	private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		Customer customer;
 		Integer id;
-		String button = request.getParameter("button");
-		String forwarTo = "/index.jsp";
+		String forwarTo = "/";
 		String logged_in = "no";
-		if(button.equals("login")){
-			customer = service.getCustomer(request.getParameter("email"), request.getParameter("password"));
-			id = customer.getId();
-			if(id!=null){
-				//set session
-				HttpSession session = request.getSession();
-				session.setAttribute("customer_id", id);
-				logged_in = "yes";
-				forwarTo = "/index.jsp";
+		
+		customer = service.getCustomer(request.getParameter("email"), request.getParameter("password"));
+		id = customer.getId();
+		System.out.println("ID:"+id);
+		if(id!=null){
+			//set session
+			HttpSession session = request.getSession();
+			session.setAttribute("customer_id", id);
 				
-			}else{
-				logged_in = "no";
-				forwarTo="/error.jsp";
-			}
-			Cookie cookie = new Cookie("logged_in", logged_in);
-			cookie.setMaxAge(1*24*60*60);
-			response.addCookie(cookie);
-			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(forwarTo);
-			dispatcher.forward(request, response);
+			logged_in = "yes";
+			forwarTo = "/";
+				
+		}else{
+			logged_in = "no";
+			System.out.println("Login or password was incorrect.");
+			forwarTo="/error.jsp";
 		}
-		System.out.println(button);
+		Cookie cookie = new Cookie("logged_in", logged_in);
+		cookie.setMaxAge(1*24*60*60);
+		response.addCookie(cookie);
+			
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(forwarTo);
+		dispatcher.forward(request, response);
+	
 	}
 	
-	private void logOut(){
+	private void logOut(HttpServletRequest request, HttpServletResponse response){
 		
 	}
-	private Integer signIn(Customer customer){
-		return null;
+	private void signUp(HttpServletRequest request, HttpServletResponse response){
+
 	}
 
 }

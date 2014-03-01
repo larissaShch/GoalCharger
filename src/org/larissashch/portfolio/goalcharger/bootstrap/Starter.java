@@ -8,6 +8,7 @@ import java.util.List;
 import org.larissashch.portfolio.goalcharger.model.entity.ApplicationProperties;
 import org.larissashch.portfolio.goalcharger.model.entity.Customer;
 import org.larissashch.portfolio.goalcharger.model.entity.KeyWord;
+import org.larissashch.portfolio.goalcharger.persistence.repository.GoalRepository;
 import org.larissashch.portfolio.goalcharger.persistence.repository.UserRepository;
 import org.larissashch.portfolio.goalcharger.persistence.repository.jdbc.InDBGoalRepository;
 import org.larissashch.portfolio.goalcharger.persistence.repository.xml.InXMLUserRepository;
@@ -45,6 +46,7 @@ public class Starter {
 		
 		
 		UserRepository userRepository = new InXMLUserRepository(false);
+		GoalRepository goalRepository = new InDBGoalRepository(false);
 		Customer customer = new Customer();
 		customer.setAutoDeleteFlag(true);
 		customer.setTesterAccountFlag(false);
