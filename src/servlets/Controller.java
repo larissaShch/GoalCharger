@@ -63,8 +63,9 @@ public class Controller extends HttpServlet {
 			response.addCookie(cookie);
 		}
 		
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/");
-		dispatcher.forward(request, response);
+		response.sendRedirect("index.jsp");
+		//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/");
+		//dispatcher.forward(request, response);
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class Controller extends HttpServlet {
 	private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		Customer customer;
 		Integer id;
-		String forwarTo = "/";
+		String forwardTo = "/";
 		String logged_in = "no";
 		
 		customer = service.getCustomer(request.getParameter("email"), request.getParameter("password"));
@@ -99,19 +100,20 @@ public class Controller extends HttpServlet {
 			session.setAttribute("customer_id", id);
 				
 			logged_in = "yes";
-			forwarTo = "/";
+			forwardTo = "index.jsp";
 				
 		}else{
 			logged_in = "no";
 			System.out.println("Login or password was incorrect.");
-			forwarTo="/error.jsp";
+			forwardTo="/error.jsp";
 		}
 		Cookie cookie = new Cookie("logged_in", logged_in);
 		cookie.setMaxAge(1*24*60*60);
 		response.addCookie(cookie);
-			
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(forwarTo);
-		dispatcher.forward(request, response);
+		
+		response.sendRedirect(forwardTo);
+		//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(forwarTo);
+		//dispatcher.forward(request, response);
 	
 	}
 	

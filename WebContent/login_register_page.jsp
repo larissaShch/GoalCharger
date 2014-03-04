@@ -1,4 +1,4 @@
-		<div id="login_page" name="login_page">
+		<div class="r_page" id="login_page">
 			<div id="login_page_content">
 				<div id="login_logo"></div>
 				<div id="signup_logo"></div>

@@ -1,4 +1,4 @@
-		<div id="my_account">
+		<div class="r_page" id="my_account">
 			<% 
 				String email = "test";
 				String password = "test";
@@ -10,9 +10,9 @@
 			<%= email %><br>
 			<%= password %>
 		</div>
-		<div id="my_goals">
+		<div class="r_page" id="my_goals">
 		</div>
-		<div id="goal">
+		<div class="r_page" id="goal">
 		</div>
-		<div id="step">
+		<div class="r_page" id="step">
 		</div>

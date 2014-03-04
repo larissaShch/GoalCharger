@@ -28,7 +28,7 @@
 <body>
 		
 	<div id="container">
-		<div id="main_page">
+		<div class="r_page" id="main_page">
 			<div id="main_page_menu">
 
 
@@ -43,13 +43,12 @@
 				</div>
 			</div>
 		</div>
-		<% if(logged_in.equals("no")) {%>
+		<% if(logged_in.equals("no")){ %>
 			<%@ include file="login_register_page.jsp" %>
-		<%} 
-		  if(logged_in.equals("yes")){
-		%>
+		<%}%>
+		<% if(logged_in.equals("yes")){ %>
 			<%@ include file="logged_in_page.jsp" %>
-		<%} %>
+		<%}%>
 
 		
 	</div>
@@ -61,15 +60,20 @@
 					h = 600;
 				}
 				document.getElementById('main_page').style.height = h+'px';
-				document.getElementById('login_page').style.height = h+'px';
-				document.getElementById('my_account').style.height = h+'px';
-				document.getElementById('my_goals').style.height = h+'px';
-				document.getElementById('goal').style.height = h+'px';
-				document.getElementById('step').style.height = h+'px';
 				
-
+				<% if(logged_in.equals("no")){ %>
+					document.getElementById('login_page').style.height = h+'px';	
+				
+				<%}%>
+				<% if(logged_in.equals("yes")){ %>
+								
+					document.getElementById('my_account').style.height = h+'px';
+					document.getElementById('my_goals').style.height = h+'px';
+					document.getElementById('goal').style.height = h+'px';
+					document.getElementById('step').style.height = h+'px';
+				<%}%>
 			}
-			setInterval("resizableDiv();", 50);
+			setInterval("resizableDiv();", 500);
 			
 		</script>
 </html>
