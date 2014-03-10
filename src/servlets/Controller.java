@@ -88,7 +88,7 @@ public class Controller extends HttpServlet {
 	private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		Customer customer;
 		Integer id;
-		String forwardTo = "/";
+		String forwardTo = "index.jsp";
 		String logged_in = "no";
 		
 		customer = service.getCustomer(request.getParameter("email"), request.getParameter("password"));
@@ -120,8 +120,11 @@ public class Controller extends HttpServlet {
 	private void logOut(HttpServletRequest request, HttpServletResponse response){
 		
 	}
-	private void signUp(HttpServletRequest request, HttpServletResponse response){
+	private void signUp(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		Customer customer;
 
+		response.sendRedirect("index.jsp");
+		
 	}
 
 }
